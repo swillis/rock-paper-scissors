@@ -29,7 +29,6 @@ function setPlayerMoves(
 		!moveOneValue ||
 		!moveTwoValue ||
 		!moveThreeValue) {
-		console.log('Move type is empty');
 		return;
 	}
 
@@ -37,36 +36,21 @@ function setPlayerMoves(
 		!isValidMoveType(moveOneType) ||
 		!isValidMoveType(moveTwoType) ||
 		!isValidMoveType(moveThreeType)) {
-		console.log(`Move type is invalid (${moveOneType})`);
 		return;
 	}
-
-	// if (
-	// 	moveOneValue < 1 ||
-	// 	moveTwoValue < 1 ||
-	// 	moveThreeValue < 1 ||
-	// 	moveOneValue > 99 ||
-	// 	moveTwoValue > 99 ||
-	// 	moveThreeValue > 99) {
-	// 	return;
-	// }
 
 	if (
 		!isValidMoveValue(moveOneValue) ||
 		!isValidMoveValue(moveTwoValue) ||
 		!isValidMoveValue(moveThreeValue)) {
-		console.log(`Move value is invalid (${moveOneValue})`);
 		return;
 	}
 
 	if (moveOneValue + moveTwoValue + moveThreeValue > 99) {
-		console.log('Move values greater than 99');
 		return;
 	}
 
 	else {
-		console.log('Move type is valid');
-		console.log('Move value is valid');
 		if (player === 'Player One') {
 			playerOneMoveOneType = moveOneType;
 			playerOneMoveTwoType = moveTwoType;
@@ -87,12 +71,83 @@ function setPlayerMoves(
 	}
 }
 
-function getRoundWinner() {}
-
 function isValidMoveType(moveType) {
 	return (moveType === 'rock') || (moveType === 'paper') || (moveType === 'scissors');
 }
 
 function isValidMoveValue(moveValue) {
 	return (moveValue >= 1) && (moveValue <= 99);
+}
+
+function getRoundWinner(roundNumber) {
+	if (roundNumber === 1) {
+		return getMoveWinner(playerOneMoveOneType, playerOneMoveOneValue, playerTwoMoveOneType, playerTwoMoveOneValue);
+	}
+
+	if (roundNumber === 2) {
+		return getMoveWinner(playerOneMoveTwoType, playerOneMoveTwoValue, playerTwoMoveTwoType, playerTwoMoveTwoValue);
+	}
+
+	if (roundNumber === 3) {
+		return getMoveWinner(playerOneMoveThreeType, playerOneMoveThreeValue, playerTwoMoveThreeType, playerTwoMoveThreeValue);
+	}
+
+	else {
+		return null;
+	}
+}
+
+function getMoveWinner(playerOneMoveType, playerOneMoveValue, playerTwoMoveType, playerTwoMoveValue) {
+
+	if (
+		!playerOneMoveType ||
+		!playerOneMoveValue ||
+		!playerTwoMoveType ||
+		!playerTwoMoveValue) {
+		return null;
+	}
+
+	if (playerOneMoveType === playerTwoMoveType) {
+		if (playerOneMoveValue > playerTwoMoveValue) {
+			return 'Player One';
+		}
+
+		if (playerOneMoveValue < playerTwoMoveValue) {
+			return 'Player Two';
+		}
+
+		if (playerOneMoveValue === playerTwoMoveValue) {
+			return 'Tie';
+		}
+	}
+
+	if (playerOneMoveType === 'rock') {
+		if (playerTwoMoveType === 'scissors') {
+			return 'Player One';
+		}
+
+		else {
+			return 'Player Two'
+		}
+	}
+
+	if (playerOneMoveType === 'paper') {
+		if (playerTwoMoveType === 'rock') {
+			return 'Player One';
+		}
+
+		else {
+			return 'Player Two'
+		}
+	}
+
+	if (playerOneMoveType === 'scissors') {
+		if (playerTwoMoveType === 'paper') {
+			return 'Player One';
+		}
+
+		else {
+			return 'Player Two'
+		}
+	}
 }
